@@ -173,6 +173,21 @@
 			<artifactId>icu4j</artifactId>
 			<version>53.1</version>
 		</dependency>
+		
+		<!-- Validator(mapper를 쓸수있게 해주는 라이브러리 -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.1.0.Final</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.2.4.Final</version>
+		</dependency>
+		
+		
 	</dependencies>
 
     <build>

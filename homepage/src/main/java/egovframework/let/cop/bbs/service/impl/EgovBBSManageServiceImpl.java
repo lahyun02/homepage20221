@@ -52,7 +52,7 @@ public class EgovBBSManageServiceImpl extends EgovAbstractServiceImpl implements
     /**
      * 게시물 한 건을 삭제 한다.
      *
-     * @see egovframework.let.cop.bbs.brd.service.EgovBBSManageService#deleteBoardArticle(egovframework.let.cop.bbs.brd.service.Board)
+     * @see egovframework.let.cop.bbs.brd.service.EgovBBSManageService#deleteBoardArticle(egovframework.let.cop.bbs.TempVO.service.Board)
      */
     public void deleteBoardArticle(Board board) throws Exception {
 	FileVO fvo = new FileVO();
@@ -71,7 +71,7 @@ public class EgovBBSManageServiceImpl extends EgovAbstractServiceImpl implements
     /**
      * 게시판에 게시물 또는 답변 게시물을 등록 한다.
      *
-     * @see egovframework.let.cop.bbs.brd.service.EgovBBSManageService#insertBoardArticle(egovframework.let.cop.bbs.brd.service.Board)
+     * @see egovframework.let.cop.bbs.brd.service.EgovBBSManageService#insertBoardArticle(egovframework.let.cop.bbs.TempVO.service.Board)
      */
     public void insertBoardArticle(Board board) throws Exception {
 	// SORT_ORDR는 부모글의 소트 오더와 같게, NTT_NO는 순서대로 부여
@@ -154,7 +154,7 @@ public class EgovBBSManageServiceImpl extends EgovAbstractServiceImpl implements
     /**
      * 게시물 한 건의 내용을 수정 한다.
      *
-     * @see egovframework.let.cop.bbs.brd.service.EgovBBSManageService#updateBoardArticle(egovframework.let.cop.bbs.brd.service.Board)
+     * @see egovframework.let.cop.bbs.brd.service.EgovBBSManageService#updateBoardArticle(egovframework.let.cop.bbs.TempVO.service.Board)
      */
     public void updateBoardArticle(Board board) throws Exception {
 	bbsMngDAO.updateBoardArticle(board);
