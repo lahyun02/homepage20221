@@ -22,11 +22,19 @@
 		<c:forEach var="result" items="${resultList }">
 			<tr>
 				<td><c:out value="${result.tempId}"/></td>
-				<td><c:out value="${result.tempVal}"/></td>
+				<!-- <td><c:out value="${result.tempVal}"/></td> -->
+				<td>
+					<c:url var="viewUrl" value="/temp/select.do">
+						<c:param name="tempId" value="${result.tempId}" />
+					</c:url>
+					<a href="${viewUrl}"><c:out value="${result.tempVal}" /></a>
+				</td>
 			</tr>
 		</c:forEach>
 	</tbody>
 </table>
+
+<a href="/temp/tempRegist.do">등록하기</a>
 
 
 </body>
