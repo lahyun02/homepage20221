@@ -20,6 +20,7 @@
 			TEMP_ID
 			, TEMP_VAL
 		FROM lettemp
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>
 	
 	
@@ -41,6 +42,13 @@
 		DELETE FROM lettemp
 		WHERE TEMP_ID = #{tempId}
 	</delete>
+	
+	<!-- 총 페이징수 -->
+	<select id="selectTempListCnt" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*) CNT
+		FROM lettemp	
+	</select>
 	
 	
 	

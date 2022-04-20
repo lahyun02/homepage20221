@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class TempVO implements Serializable {
+import egovframework.com.cmm.ComDefaultVO;
+
+public class TempVO extends ComDefaultVO implements Serializable {
 	//임시데이터ID
 	private String tempId;
 	

@@ -11,6 +11,7 @@
 <title>데이터 가져오기~</title>
 </head>
 <body>
+게시물 총 수 : <c:out value="${paginationInfo.totalRecordCount}" />건
 <table>
 	<thead>
 		<tr>
@@ -33,6 +34,15 @@
 		</c:forEach>
 	</tbody>
 </table>
+
+<div id="paging_div">
+	<ul class="paging_align">
+		<c:url var="pageUrl" value="/temp/selectList.do?" />
+		<c:set var="pagingParam"><c:out value="${pageUrl}" /></c:set>
+		<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="${pagingParam}" />
+	</ul>
+</div>
+
 
 <a href="/temp/tempRegist.do">등록하기</a>
 
