@@ -1985,7 +1985,7 @@
 
     <bean name="tempStrategy"
 		class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
-        <property name="prefix" value="CRUD_" />
+        <property name="prefix" value="TEMP_" />
         <property name="cipers" value="15" />
         <property name="fillChar" value="0" />
     </bean>   
