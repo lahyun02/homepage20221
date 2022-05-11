@@ -32,32 +32,12 @@
 	<input type="text" id="userNm" name="userNm" value="${result.userNm}" />
 	<br/>
 	<label for="crudCn"> 내용 : </label>
-	<textarea id="crudCn" name="crudCn" value="${result.crudCn}"><c:out value="${result.crudCn}" /></textarea>
-	<%-- <input type="text" id="crudCn" name="crudCn" value="${result.crudSj}" /> --%>
+	<textarea id="crudCn" name="crudCn" rows="10"><c:out value="${result.crudCn}" /></textarea>
 	<br/>
 	
 	<button type="submit">등록</button>
 	<button><a href="/crud/selectList.do">취소</a></button>
 	
-	<%-- <c:choose>
-		<c:when test="${not empty searchVO.crudId}">
-			<button type="submit">수정</button>
-		</c:when>
-		<c:otherwise>
-			<button type="submit">등록</button>
-		</c:otherwise>
-	</c:choose> --%>
-</form>
-
-
-<!-- <form action="/temp/insert.do" method="post" name="tempVO">
-	<label for="tempVal"> 값 정보 : </label>
-	<input type="text" id="tempVal" name="tempVal" value="" />
-	<br/>
-	<button type="submit">등록</button>
-</form> -->
-
-
 
 
 

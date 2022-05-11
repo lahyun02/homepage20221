@@ -22,8 +22,10 @@ public class CrudVO extends ComDefaultVO implements Serializable {
 	private String userNm;
 	
 	//작성일
-	private Date registDate;
-
+	private Date frstRegistPnttm;
+//	private Date registDate;
+	//메뉴
+	private String menuId;
 	
 	public String getCrudId() {
 		return crudId;
@@ -57,12 +59,22 @@ public class CrudVO extends ComDefaultVO implements Serializable {
 		this.userNm = userNm;
 	}
 
-	public Date getRegistDate() {
-		return registDate;
+	public Date getFrstRegistPnttm() {
+		return frstRegistPnttm;
 	}
 
-	public void setRegistDate(Date registDate) {
-		this.registDate = registDate;
+	public void setFrstRegistPnttm(Date frstRegistPnttm) {
+		this.frstRegistPnttm = frstRegistPnttm;
 	}
+
+	public String getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(String menuId) {
+		this.menuId = menuId;
+	}
+
+
 	
 }

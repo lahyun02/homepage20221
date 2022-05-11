@@ -41,20 +41,22 @@ public class CrudController {
 	
 	@Resource(name = "crudService")
 	private CrudService crudService;
+	// 객체명과 변수명에 앞자리에 각각 대소문자를 다르게 해서 차이점을 둔다. 같으면 호출시 헷갈리기 때문.
 	
-	//임시데이터 가져오기
+	//CRUD 가져오기
 	@RequestMapping(value= "/crud/select.do")
 	public String select(@ModelAttribute("searchVO") CrudVO searchVO,
 				HttpServletRequest request, ModelMap model) throws Exception{
 		
-		CrudVO result = crudService.selectTemp(searchVO);
+		CrudVO result = crudService.selectCrud(searchVO);
 		model.addAttribute("result", result);
 		return "crud/CrudSelect";
 	}	
 	
-	//임시데이터 목록 가져오기
+	//CRUD 목록 가져오기
 	@RequestMapping(value = "/crud/selectList.do")
 	public String selectList(@ModelAttribute("searchVO") CrudVO searchVO, HttpServletRequest request, ModelMap model) throws Exception{
+		//throws Exception 에러는 던져낸다.
 		
 		//페이징
 		PaginationInfo paginationInfo = new PaginationInfo();
@@ -67,52 +69,55 @@ public class CrudController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
-		int totCnt = crudService.selectTempListCnt(searchVO);
+		int totCnt = crudService.selectCrudListCnt(searchVO);
 		
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
 		
-		//임시데이터목록
-		List<EgovMap> resultList = crudService.selectTempList(searchVO);
+		//CRUD 목록
+		List<EgovMap> resultList = crudService.selectCrudList(searchVO);
 		model.addAttribute("resultList", resultList);
 		
 		return "crud/CrudSelectList";
 	}
 	
-	//임시데이터 등록/수정
+	//CRUD 등록/수정
 	@RequestMapping(value = "/crud/crudRegist.do")
 	public String tempRegist(@ModelAttribute("searchVO") CrudVO crudVO, HttpServletRequest request, ModelMap model) throws Exception{
 		
 		CrudVO result = new CrudVO();
 		if(!EgovStringUtil.isEmpty(crudVO.getCrudId())) {
-			result = crudService.selectTemp(crudVO);
+			result = crudService.selectCrud(crudVO);
 		}
+		// 목적: 등록/수정 jsp페이지를 나누기 위해. 의미: crudId가 있으면 수정, 없으면 등록. 
 		model.addAttribute("result", result);
+		
+		model.addAttribute("searchVO", crudVO);
 		
 		return "crud/CrudRegist";
 	}
 	
-	//임시데이터 등록하기
+	//CRUD 등록하기
 	@RequestMapping(value = "/crud/insert.do")
 	public String insert(@ModelAttribute("searchVO") CrudVO searchVO, HttpServletRequest request, ModelMap model) throws Exception{
 		
-		crudService.insertTemp(searchVO);
+		crudService.insertCrud(searchVO);
 		return "forward:/crud/selectList.do";
 	}
 	
-	//임시데이터 수정하기
+	//CRUD 수정하기
 	@RequestMapping(value = "/crud/update.do")
 	public String update(@ModelAttribute("searchVO") CrudVO searchVO, HttpServletRequest request, ModelMap model) throws Exception{
 		
-		crudService.updateTemp(searchVO);
+		crudService.updateCrud(searchVO);
 		return "forward:/crud/selectList.do";
 	}
 	
-	//임시데이터 삭제하기
+	//CRUD 삭제하기
 	@RequestMapping(value = "/crud/delete.do")
 	public String delete(@ModelAttribute("searchVO") CrudVO searchVO, HttpServletRequest request, ModelMap model) throws Exception{
-		crudService.deleteTemp(searchVO);
+		crudService.deleteCrud(searchVO);
 		return "forward:/crud/selectList.do";
 	}
 		

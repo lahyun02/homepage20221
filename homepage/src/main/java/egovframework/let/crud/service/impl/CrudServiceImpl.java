@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 @Service("crudService")
 public class CrudServiceImpl extends EgovAbstractServiceImpl implements CrudService {
+	// 어노테이션에 명칭을 줄때 항상 소문자로 시작함.
 	
 	@Resource(name = "crudMapper")
 	private CrudMapper crudMapper;
@@ -36,42 +37,49 @@ public class CrudServiceImpl extends EgovAbstractServiceImpl implements CrudServ
 	private EgovIdGnrService idgenService;
 	//context-idgen에 있는 이름을 @resource의 이름에 들어감. (리소스를 통해 context-idgen을 찾아갈 수 있도록)
 	
+	//CRUD 가져오기
 	@Override
-	public CrudVO selectTemp(CrudVO vo) throws Exception {
-		return crudMapper.selectTemp(vo);
+	public CrudVO selectCrud(CrudVO vo) throws Exception {
+		/*
+		CrudVO result = crudMapper.selectCrud(vo);
+		return result;
+		*/
+		//데이터의 가공 없이 db에서 값만 가져오므로 별도의 로직 없이 리턴으로 값만 db에서 가져옴.
+		return crudMapper.selectCrud(vo);
 	}
 	
-	//임시데이터 목록 가져오기
-	public List<EgovMap> selectTempList(CrudVO vo) throws Exception {
+	//CRUD 목록 가져오기
+	public List<EgovMap> selectCrudList(CrudVO vo) throws Exception {
 		
-		return crudMapper.selectTempList(vo);
+		return crudMapper.selectCrudList(vo);
 	}
 	
-	//임시데이터 등록하기 - string으로 id체크. 
+	//CRUD 등록하기 - string으로 id체크. 
 	//getNextStringId()-캐시를 받아옴. idgenService.getNextStringId()-id를 가져옴.
 	//impl에 idgen을 넣는 이유-중간에 네트워크가 끊기는 순간(로직이복잡할떄) 오류-> 다 rollback이 됨.반면, controller는 오류나면 데이터입력되다가 중간에 데이터가 빵꾸가 남.
 	//impl-> 대기하고 있다가 중간에 다시 rollback할 수 있음.
-	public String insertTemp(CrudVO vo) throws Exception {
+	public String insertCrud(CrudVO vo) throws Exception {
 		String id = idgenService.getNextStringId();
 		vo.setCrudId(id);
-		crudMapper.insertTemp(vo);
+		crudMapper.insertCrud(vo);
 		
 		return id;
 	}
 	
-	//임시데이터 수정하기
-	public void updateTemp(CrudVO vo) throws Exception{
-		crudMapper.updateTemp(vo);
+	// 지금 현 상황에선 수정, 삭제에 리턴값이 없어도 됨. 쇼핑몰같은 경우 숫자를 반환함. 예- A업체, B업체에 주문 후 취소했을 경우.
+	//CRUD 수정하기
+	public void updateCrud(CrudVO vo) throws Exception{
+		crudMapper.updateCrud(vo);
 	}
 	
-	//임시데이터 삭제하기
-	public void deleteTemp(CrudVO vo) throws Exception{
-		crudMapper.deleteTemp(vo);
+	//CRUD 삭제하기
+	public void deleteCrud(CrudVO vo) throws Exception{
+		crudMapper.deleteCrud(vo);
 	}
 	
-	//임시데이터 목록 수
-	public int selectTempListCnt(CrudVO vo) throws Exception {
-		return crudMapper.selectTempListCnt(vo);
+	//CRUD 목록 수
+	public int selectCrudListCnt(CrudVO vo) throws Exception {
+		return crudMapper.selectCrudListCnt(vo);
 	}
 	
 	

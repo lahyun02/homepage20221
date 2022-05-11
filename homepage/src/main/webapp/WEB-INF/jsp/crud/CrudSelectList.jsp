@@ -13,9 +13,24 @@
 <meta http-equiv="Content-Language" content="ko" >
 <title>데이터 가져오기~</title>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<style>
+a {
+	text-decoration: none;
+	color: #000;
+}
+table {
+	width: 50%;
+	margin: 0 auto;
+	border: 1px solid #ccc;
+}
+.cnt {
+	text-align: right;
+	display: block;
+}
+</style>
 </head>
 <body>
-게시물 총 수 : <c:out value="${paginationInfo.totalRecordCount}" />건
+<%-- <span class="cnt">게시물 총 수 : <c:out value="${paginationInfo.totalRecordCount}" />건</span> --%>
 <table>
 	<thead>
 		<tr>
@@ -34,14 +49,14 @@
 				<td>
 					<c:url var="viewUrl" value="/crud/select.do">
 						<c:param name="crudId" value="${result.crudId}" />
+						<c:param name="menuId" value="aaaaa" />
 					</c:url>
 					<a href="${viewUrl}"><c:out value="${result.crudSj}" /></a>
 				</td>
 				<td><c:out value="${result.userNm}"/></td>
-				<%-- <td><c:out value="${result.registDate}"/></td> --%>
-				
 				<td>
-					<fmt:formatDate value="${result.registDate}" pattern="yyyy-MM-dd" />   
+					<fmt:formatDate value="${result.frstRegistPnttm}" pattern="yyyy-MM-dd" />   
+					<%-- <fmt:formatDate value="${result.registDate}" pattern="yyyy-MM-dd" />    --%>
 				</td> 
 				<td>
 					<c:url var="delUrl" value="/crud/delete.do">

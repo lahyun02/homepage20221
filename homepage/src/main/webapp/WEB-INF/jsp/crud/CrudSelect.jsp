@@ -10,6 +10,13 @@
 <head>
 <meta charset="UTF-8">
 <title>데이터 가져오기~</title>
+<style>
+a {
+	text-decoration: none;
+	color: #000;
+}
+</style>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
 
@@ -17,7 +24,10 @@
 	<tbody>
 		<tr>
 			<th>제목</th>
-			<td><c:out value="${result.crudSj}" /></td>
+			<td><c:out value="${result.crudSj}" />
+			<c:out value="${searchVO.menuId}" />==
+			<c:out value="${result.menuId}" />==
+			</td>
 		</tr>
 		<tr>
 			<th>작성자</th>
@@ -25,7 +35,8 @@
 		</tr>
 		<tr>
 			<th>작성일</th>
-			<td><fmt:formatDate value="${result.registDate}" pattern="yyyy-MM-dd" />   </td>
+			<td><fmt:formatDate value="${result.frstRegistPnttm}" pattern="yyyy-MM-dd" />   </td>
+<%-- 			<td><fmt:formatDate value="${result.registDate}" pattern="yyyy-MM-dd" />   </td> --%>
 		</tr>
 		<tr>
 			<th>내용</th>
@@ -35,16 +46,6 @@
 </table>
 
 
-	<%-- 제목: ${result.crudSj}	
-	<br/>
-	작성자: ${result.userNm}
-	<br/>
-	작성일: ${result.registDate}
-	<br/>
-	내용: ${result.crudCn}
-	<br/>
-	 --%>
-	
 	
 <div class="box-btn">
 	<c:url var="uptUrl" value="/crud/crudRegist.do">
@@ -57,9 +58,15 @@
 	</c:url>
 	<button><a href="${delUrl}" class="btn-del">삭제</a></button>
 	
-	<button><a href="/crud/selectList.do">목록</a></button>
+	<button id="btn-cancel">목록</button>
 </div>
-
+<script>
+$(document).ready(function(){
+	$("#btn-cancel").click(function(){
+		location.href = "/crud/selectList.do";
+	});
+});
+</script>
 
 	
 </body>
