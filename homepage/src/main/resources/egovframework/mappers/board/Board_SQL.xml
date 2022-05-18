@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.let.board.service.impl.BoardMapper">
+
+	<select id="selectBoardList" resultType="egovMap">
+		SELECT
+			A.BOARD_ID
+			, A.BOARD_SJ
+			, A.BOARD_CN
+			, A.INQIRE_CO
+			, A.CREAT_IP
+			, A.NOTICE_AT
+			, A.OTHBC_AT
+			, A.USE_AT
+			, A.ATCH_FILE_ID
+			, A.FRST_REGIST_PNTTM
+			, A.FRST_REGISTER_ID
+		FROM BOARD A
+		<include refid="selectBoardListWhere"></include>
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+		
+		<if test='noticeAt != "Y"'>
+			LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+		</if>
+	</select>
+	
+	<select id="selectBoardListCnt" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*) CNT
+		FROM BOARD A
+		<include refid="selectBoardListWhere"></include>
+	</select>
+	
+	<sql id="selectBoardListWhere">
+		<where>
+			A.USE_AT = 'Y'
+			<choose>
+				<when test='noticeAt == "Y"'>
+					AND A.NOTICE_AT = 'Y'
+				</when>
+				<otherwise>
+					<if test='searchCondition != null and searchCondition != ""'>
+						<choose>
+							<when test='searchCondition == "0"'>
+								AND A.BOARD_SJ LIKE CONCAT('%', #{searchKeyword}, '%')
+							</when>
+							<when test='searchCondition == "1"'>
+								AND A.BOARD_CN LIKE CONCAT('%', #{searchKeyword}, '%')
+							</when>
+							<when test='searchCondition == "2"'>
+								AND A.FRST_REGISTER_ID LIKE CONCAT('%', #{searchKeyword}, '%')
+							</when>
+						</choose>
+					</if>
+				</otherwise>
+			</choose>
+		</where>
+	</sql>
+	
+	
+
+</mapper>
