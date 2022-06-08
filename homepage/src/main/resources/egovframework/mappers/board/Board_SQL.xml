@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.let.board.service.impl.BoardMapper">
+	
+	<resultMap id="board" type="egovframework.let.board.service.BoardVO">
+		<result property="boardId" column="BOARD_ID"/>
+		<result property="boardSj" column="BOARD_SJ"/>
+		<result property="boardCn" column="BOARD_CN"/>
+		<result property="inqireCo" column="INQIRE_CO"/>
+		<result property="creatIp" column="CREAT_IP"/>
+		<result property="noticeAt" column="NOTICE_AT"/>
+		<result property="othbcAt" column="OTHBC_AT"/>
+		<result property="useAt" column="USE_AT"/>
+		<result property="atchFileId" column="ATCH_FILE_ID"/>
+		<result property="frstRegistPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+	</resultMap>
 
 	<select id="selectBoardList" resultType="egovMap">
 		SELECT
@@ -90,6 +104,56 @@
 		
 	<!-- 초기값 세팅: 처음에 값이 들어갈때 db에 초기값을 줄지, param 변수로 받아오는지 생각 -->
 	</insert>
+	
+	<select id="selectBoard" resultMap="board">
+		SELECT
+			BOARD_ID
+			, BOARD_SJ
+			, BOARD_CN
+			, INQIRE_CO
+			, CREAT_IP
+			, NOTICE_AT
+			, OTHBC_AT
+			, USE_AT
+			, ATCH_FILE_ID
+			, FRST_REGIST_PNTTM
+			, FRST_REGISTER_ID
+		FROM BOARD
+		WHERE BOARD_ID = #{boardId}
+			AND USE_AT = 'Y'
+	</select>
+	
+	<update id="updateViewCnt" parameterType="egovframework.let.board.service.BoardVO">
+		UPDATE BOARD SET
+			INQIRE_CO = INQIRE_CO + 1
+		WHERE BOARD_ID = #{boardId}
+	</update>
+	
+	<update id="updateBoard" parameterType="egovframework.let.board.service.BoardVO">
+		UPDATE BOARD SET
+			BOARD_SJ = #{boardSj}
+			, BOARD_CN = #{boardCn}
+			, NOTICE_AT = #{noticeAt}
+			, OTHBC_AT = #{othbcAt}
+			<if test='atchFileId != null and atchFileId != ""'>
+				, ATCH_FILE_ID = #{atchFileId}
+			</if>
+			, LAST_UPDT_PNTTM = NOW()
+			, LAST_UPDUSR_ID = #{userId}
+		WHERE BOARD_ID = #{boardId}
+		<if test='mngAt != "Y"'>
+			AND FRST_REGISTER_ID = #{userId}
+		</if>
+	</update>
+	
+	<update id="deleteBoard" parameterType="egovframework.let.board.service.BoardVO">
+		UPDATE BOARD SET
+			USE_AT = 'N'
+		WHERE BOARD_ID = #{boardId}
+		<if test='mngAt != "Y"'>
+			AND FRST_REGISTER_ID = #{userId}
+		</if>
+	</update>
 	
 	
 

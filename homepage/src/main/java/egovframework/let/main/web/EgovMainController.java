@@ -94,5 +94,13 @@ public class EgovMainController {
 
 		return "main/EgovMainView";
 	}
+	
+	@RequestMapping(value = "/index.do")
+	public String index(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		return "main/Index";
+		
+	}
+	
 
 }

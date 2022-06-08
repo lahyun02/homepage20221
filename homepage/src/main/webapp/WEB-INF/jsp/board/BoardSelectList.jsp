@@ -98,6 +98,7 @@
 						<%-- 일반 글 --%>
 						<c:forEach var="result" items="${resultList}" varStatus="status">
 							<tr>
+								<%-- 게시글 순서 처리하는 로직 --%>
 								<td class="num">
 									<c:out value="${paginationInfo.totalRecordCount - ((searchVO.pageIndex-1) * searchVO.pageUnit) - (status.count - 1)}" />
 								</td>
@@ -107,6 +108,7 @@
 										<c:param name="pageIndex" value="${searchVO.pageIndex}" />
 									</c:url>
 									<a href="${viewUrl}">
+										<%-- 비밀글일 경우 --%>
 										<c:if test="${result.othbcAt eq 'Y'}">
 											<img src="/asset/BBSTMP_0000000000001/images/ico_board_lock.gif" alt="비밀 글 아이콘" />
 										</c:if>
@@ -125,7 +127,7 @@
 							</tr>
 						</c:forEach>
 						
-						<%-- 게시글이 없을 경우 --%>
+						<%-- 게시글이 없을 경우 (resultList의 길이가 0일 경우) --%>
 						<c:if test="${fn:length(resultList) == 0}">
 							<tr class="empty"><td colspan="5">검색 데이터가 없습니다.</td></tr>
 						</c:if>
