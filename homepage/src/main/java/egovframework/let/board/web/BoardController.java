@@ -6,6 +6,8 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.service.EgovFileMngService;
+import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.let.board.service.BoardService;
 import egovframework.let.board.service.BoardVO;
@@ -19,7 +21,7 @@ import egovframework.let.temp.service.TempVO;
 import egovframework.let.temp2.service.Temp2Service;
 import egovframework.let.temp2.service.Temp2VO;
 import egovframework.let.utl.fcc.service.EgovStringUtil;
-
+import egovframework.let.utl.fcc.service.FileMngUtil;
 import egovframework.rte.fdl.cmmn.exception.EgovBizException;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
@@ -36,6 +38,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 @Controller
@@ -44,6 +48,12 @@ public class BoardController {
 	@Resource(name = "boardService")
 	private BoardService boardService;
 	// 객체명과 변수명에 앞자리에 각각 대소문자를 다르게 해서 차이점을 둔다. 같으면 호출시 헷갈리기 때문.
+	
+	@Resource(name = "EgovFileMngService")
+	protected EgovFileMngService fileMngService;
+	
+	@Resource(name = "fileMngUtil")
+	private FileMngUtil fileUtil;
 		
 	//Board 목록 가져오기
 	@RequestMapping(value = "/board/selectList.do")
@@ -114,7 +124,7 @@ public class BoardController {
 	
 	//게시글 등록하기
 	@RequestMapping(value = "/board/insert.do")
-	public String insert(@ModelAttribute("searchVO") BoardVO searchVO, HttpServletRequest request, ModelMap model) throws Exception{
+	public String insert(final MultipartHttpServletRequest multiRequest, @ModelAttribute("searchVO") BoardVO searchVO, HttpServletRequest request, ModelMap model) throws Exception{
 		
 		//이중 서브밋 방지 체크
 		// F5를 하면 입력했던 값이 그대로 남아있음.
@@ -131,6 +141,20 @@ public class BoardController {
 			model.addAttribute("message", "로그인 후 사용가능합니다.");
 			return "forward:/board/selectList.do";
 		}
+		
+		//----- 첨부파일 추가
+		List<FileVO> result = null;
+		String atchFileId = "";
+		
+		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		if(!files.isEmpty()) {
+			result = fileUtil.parseFileInf(files, "BOARD_", 0, "", "board.fileStorePath");  //확장자가 x -최후의 보루(보안)
+			//BOARD_ : KeyStr
+			
+			atchFileId = fileMngService.insertFileInfs(result); 
+		}
+		searchVO.setAtchFileId(atchFileId); 
+		//
 		
 		searchVO.setCreatIp(request.getRemoteAddr()); //작성자 기준 IP 작성 . 공인 IP에 대한 정보 저장 (사설IP X) 
 		searchVO.setUserId(user.getId());
@@ -164,7 +188,7 @@ public class BoardController {
 	
 	//게시물 수정하기
 	@RequestMapping(value = "/board/update.do")
-	public String update(@ModelAttribute("searchVO") BoardVO searchVO, HttpServletRequest request, ModelMap model) throws Exception{
+	public String update(final MultipartHttpServletRequest multiRequest, @ModelAttribute("searchVO") BoardVO searchVO, HttpServletRequest request, ModelMap model) throws Exception{
 		//이중 서브밋 방지
 		if(request.getSession().getAttribute("sessionBoard") != null) {
 			return "forward:/board/selectList.do";
