@@ -30,6 +30,7 @@ public class FileMngUtil {
 	// 첨부파일에 대한 목록 정보를 취득한다.
 	public List<FileVO> parseFileInf(Map<String, MultipartFile> files, String KeyStr, int fileKeyParam, String atchFileId, String storePath) throws Exception {
 		
+		// KeyStr : 파일저장할 때 앞에 이름 디폴트로 설정하는 것.
 		// atchFileId: 첨부파일 id 
 		// storePath: 저장경로
 		
@@ -89,7 +90,7 @@ public class FileMngUtil {
 			String fileExt = orginFileName.substring(index + 1);  // 확장자 가져오기 
 			
 			//저장파일명 - 운영체제상 덮어쓰기(리눅스)나 1,2,3 복사본(윈도우)이 생기기때문에 개발자가 파일저장할때 이름을 바꿔줘야함.
-			// db- 원본파일명 : 사용자에게 원본파일명을 던져주기 위해 , 저장파일명: 개발자가 저장하기 위해 
+			// (참고로 db- 원본파일명 : 사용자에게 원본파일명을 던져주기 위해 , 저장파일명: 개발자가 저장하기 위해 )
 			String newName = KeyStr + EgovStringUtil.getTimeStamp() + fileKey;
 			
 			//파일사이즈 - 우리가 몇 용량을 차지하고 있는지 확인 위해

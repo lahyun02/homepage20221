@@ -52,7 +52,8 @@ public class EgovFileMngController {
     @RequestMapping("/cmm/fms/selectFileInfs.do")
     public String selectFileInfs(@ModelAttribute("searchVO") FileVO fileVO, @RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
 	String atchFileId = (String)commandMap.get("param_atchFileId");
-
+	//jsp(tit_view)에서 보낸 파라미터 값으로 atchFileId 를 받아옴.
+	
 	fileVO.setAtchFileId(atchFileId);
 	List<FileVO> result = fileService.selectFileInfs(fileVO);
 

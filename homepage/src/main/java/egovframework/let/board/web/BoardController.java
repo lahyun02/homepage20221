@@ -202,6 +202,21 @@ public class BoardController {
 			searchVO.setMngAt("Y");
 		}
 		
+		String atchFileId = searchVO.getAtchFileId();
+		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		if(!files.isEmpty()) {
+			if(EgovStringUtil.isEmpty(atchFileId)) {
+				List<FileVO> result = fileUtil.parseFileInf(files, "BOARD_", 0, "", "board.fileStorePath"); 
+				atchFileId = fileMngService.insertFileInfs(result);
+				searchVO.setAtchFileId(atchFileId);
+			} else {
+				FileVO fvo = new FileVO();
+				fvo.setAtchFileId(atchFileId);
+				int cnt = fileMngService.getMaxFileSN(fvo);
+				List<FileVO> _result = fileUtil.parseFileInf(files, "BOARD_", cnt, atchFileId, "board.fileStorePath"); 
+				fileMngService.updateFileInfs(_result); 
+			}
+		}
 		searchVO.setUserId(user.getId()); 
 		
 		boardService.updateBoard(searchVO);

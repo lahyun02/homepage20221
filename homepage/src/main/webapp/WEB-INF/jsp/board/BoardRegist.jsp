@@ -117,8 +117,10 @@ $(function(){
 <div id="contents">
 	<form action="${actionUrl}" method="post" id="frm" name="frm" onsubmit="return regist()" enctype="multipart/form-data">
 		<%-- onsubmit: 유효성 검사  "return true"를 생략한 것. --%>
-		<input type="hidden" name="boardId" value="${result.boardId}" />
-		
+		<input type="hidden" name="boardId" value="${result.boardId}"/>
+		<input type="hidden" name="returnUrl" value="/board/boardRegist.do"/>
+		<%--"returnUrl": 첨부파일목록에서 x(삭제)버튼을 눌렀을때 다시 이 url로 돌아올수있도록 --%>
+
 		<table class="chart2">
 			<%-- caption: 표에 대한 제목. 웹표준성- 테이블엔 꼭 들어가야함. 이 테이블은~ 가 들어가있습니다.라고 설명해주는 것. --%>
 			<caption>게시글 작성</caption> 
@@ -170,11 +172,29 @@ $(function(){
 						<%-- textarea태그 사이에 엔터를 치면 그대로 한줄 떨어져서 나옴. 붙여서 한줄로 써야함 --%>
 					</td>
 				</tr>
+				<c:if test="${not empty result.atchFileId}">
+					<tr>
+						<th scope="row">기존<br/>첨부파일목록</th>
+						<td>
+							<c:import url="/cmm/fms/selectFileInfsForUpdate.do" charEncoding="utf-8">
+								<c:param name="param_atchFileId" value="${result.atchFileId}" /> 
+							</c:import>
+						</td>
+					</tr>
+				</c:if>
 				
 				<tr>
 					<th scope="row">파일첨부</th>
 					<td>
 						<input type="file" name="file_1" />
+						<br/>
+						<input type="file" name="file_2" />
+						<br/>
+						<input type="file" name="file_3" />
+						<br/>
+						<input type="file" name="file_4" />
+						<br/>
+						<input type="file" name="file_5" />
 					</td>
 				</tr>
 				
