@@ -129,7 +129,30 @@ public class TempController {
 		return "/temp/JstlImport";
 	}
 	
-	
+	//ajax샘플
+	@RequestMapping(value = "/temp/ajaxRegist.do")
+	public String tempAjaxRegist(@ModelAttribute("searchVO") TempVO searchVO, HttpServletRequest request, ModelMap model) throws Exception {
+		return "/temp/TempAjaxRegist";
+	}
+
+	//ajax목록
+	@RequestMapping(value = "/temp/ajaxList.do")
+	public String tempAjaxList(@ModelAttribute("searchVO") TempVO searchVO, HttpServletRequest request, ModelMap model) throws Exception{
+		
+		//내용저장 -> 교수님이 알려주시려고 인위적으로 여기에 넣으셨음. (등록 부분을) 
+		if(!EgovStringUtil.isEmpty(searchVO.getTempVal())) {
+			tempService.insertTemp(searchVO); 
+		}
+		
+		searchVO.setRecordCountPerPage(Integer.MAX_VALUE);
+		searchVO.setFirstIndex(0); 
+		
+		List<EgovMap> resultList = tempService.selectTempList(searchVO);
+		model.addAttribute("resultList", resultList);
+		
+		return "/temp/TempAjaxList";
+		
+	}
 	
 	
 	
