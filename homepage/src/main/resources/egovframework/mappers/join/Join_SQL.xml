@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.let.join.service.impl.JoinMapper"> <!-- 이 mapper namespace가 찾아가는 경로이므로 꼭 정확히 명시해야한다. -->
+
+	<resultMap id="JoinVO" type="egovframework.let.join.service.JoinVO">
+		<result property="esntlId" column="ESNTL_ID"/>
+		<result property="emplyrId" column="EMPLYR_ID"/>
+		<result property="userNm" column="USER_NM"/>
+		<result property="password" column="PASSWORD"/>
+		<result property="passwordHint" column="PASSWORD_HINT"/>
+		<result property="passwordCnsr" column="PASSWORD_CNSR"/>
+		<result property="emplyrSttusCode" column="EMPLYR_STTUS_CODE"/>
+		<result property="sbscrbDe" column="SBSCRB_DE"/>
+	</resultMap>
+	
+	
+	<select id="duplicateCheck" resultType="java.lang.Integer">
+		SELECT COUNT(*) CNT FROM LETTNEMPLYRINFO
+		WHERE EMPLYR_ID =#{emplyrId}
+	</select>
+
+	<insert id="insertJoin" > 
+		INSERT INTO LETTNEMPLYRINFO(
+			ESNTL_ID,
+			EMPLYR_ID,
+			USER_NM,
+			PASSWORD,
+			PASSWORD_HINT,
+			PASSWORD_CNSR,
+			EMPLYR_STTUS_CODE,
+			SBSCRB_DE
+		) 
+		VALUES(
+			#{esntlId},
+			#{emplyrId},
+			#{userNm},
+			#{password},
+			#{passwordHint},
+			#{passwordCnsr},
+			'P',
+			NOW()
+		)
+	</insert>
+	
+
+
+</mapper>
