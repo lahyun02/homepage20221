@@ -47,12 +47,12 @@ public class JoinController {
 			//일반가입을 제외하고는 ID값은 SNS명 + ID값(ex. KAKAO-123456)
 			if(!("normal").equals(vo.getLoginType())) {
 				vo.setEmplyrId(vo.getLoginType() + "-" + vo.getEmplyrId());
-				vo.setPassword("");
-				vo.setPasswordHint("SNS가입자"); //필수값이기때문에 임의값 임시기입
+				vo.setPassword(""); //null이 아니라 빈 공간으로 간다. 암호화시켜 db에 저장하기 위해. (둘 중 하나가 null이면 암호화할 수 없음)
+				vo.setPasswordHint("SNS가입자"); //필수값이기때문에 임의값 임시기입 (sns가입자는 비번힌트가 의미x떄문)
 				vo.setPasswordCnsr("SNS가입자"); //필수값이기때문에 임의값 임시기입
 			}
 		}
-		
+		// 서버에서 한번 더 체크하는 이유 - 두명이상 동시 접속-아이디중복확인 후, 가입버튼을 눌렀을때 나머지 한명이 중복되면 에러뜨는 걸(db-unique키) 막기 위해 
 		if(joinService.duplicateCheck(vo) > 0) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.duplicate.member")); 
 			//이미 사용중인 ID입니다.
@@ -72,8 +72,8 @@ public class JoinController {
 		String successYn = "Y";
 		String message = "성공";
 		
-		JSONObject jo = new JSONObject();
-		response.setContentType("application/json; charset=utf-8");
+		JSONObject jo = new JSONObject(); 		//map과 비슷. json객체에 데이터를 담아서 사용함.
+		response.setContentType("application/json; charset=utf-8");		//보안상 작성. 정확하게 어떤 데이터인지 알려주기 위해(디폴트:text)
 		
 		int duplicateCnt = joinService.duplicateCheck(vo);
 		if(duplicateCnt > 0) {
@@ -85,9 +85,10 @@ public class JoinController {
 		jo.put("successYn", successYn);
 		jo.put("message", message);
 		
+		//jsp없이 바로 화면에 작성하기 위해 Printwriter를 사용함.
 		PrintWriter printwriter = response.getWriter();
 		printwriter.println(jo.toString());
 		printwriter.flush();
-		printwriter.close();
+		printwriter.close();	//닫아주기
 	}
 }

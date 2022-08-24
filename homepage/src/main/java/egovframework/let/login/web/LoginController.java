@@ -58,4 +58,15 @@ public class LoginController {
 		return "forward:/index.do"; 
 	}
 	
+	
+	//개인프로젝트 추가 로그인화면
+	//로그인 폼
+//	@RequestMapping(value = "/login/loginForm.do")
+//	public String loginForm(String loginMessage, HttpServletRequest request, ModelMap model) throws Exception {
+//		String address = request.getHeader("Referer");
+//		model.addAttribute("address", address); 
+//		System.out.println(loginMessage);
+//		return "main/Login";
+//	}
+	
 }

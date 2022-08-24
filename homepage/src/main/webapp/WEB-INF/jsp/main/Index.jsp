@@ -20,6 +20,7 @@
 <c:choose>
 	<c:when test="${empty USER_INFO.id}">
 		<a href="/login/actionLogin.do" class="login">로그인</a>
+		<a href="/join/memberType.do" >회원가입</a>
 	</c:when>
 	<c:otherwise>
 		<a href="/login/actionLogout.do"><c:out value="${USER_INFO.name}"/>님 로그아웃</a> 
@@ -84,6 +85,10 @@ function vali(){
 
 <c:if test="${not empty loginMessage}">
 	alert("${loginMessage}"); 
+</c:if>
+
+<c:if test="${not empty message}">
+alert("${message}"); 
 </c:if>
 
 </script>
