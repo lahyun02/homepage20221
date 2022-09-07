@@ -37,6 +37,9 @@
 		<a class="btn-kakao" href="#" data-type="join">
 			<img src="http://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="150" alt="카카오 로그인 버튼"/>
 		</a>
+		<a class="btn-naver" href="${naverAuthUrl}" data-type="join">
+			<img src="/asset/front/images/common/btn-naver.png" width="150" alt="네이버 로그인 버튼" />		
+		</a>
 	</nav>
 </div>
 

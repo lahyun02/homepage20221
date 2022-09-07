@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
+import egovframework.let.api.naver.service.NaverLoginService;
 import egovframework.let.join.service.JoinService;
 import egovframework.let.join.service.JoinVO;
 import egovframework.let.utl.fcc.service.EgovStringUtil;
@@ -26,9 +28,17 @@ public class JoinController {
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
 	
+	@Resource(name = "naverLoginService")
+	private NaverLoginService naverLoginService;
+	
 	//회원구분
 	@RequestMapping(value = "/join/memberType.do")
-	public String memberType(@ModelAttribute("searchVO") JoinVO vo, HttpServletRequest request, ModelMap model) throws Exception{
+	public String memberType(@ModelAttribute("searchVO") JoinVO vo, HttpServletRequest request, ModelMap model, HttpSession session) throws Exception{
+		
+		//Naver
+		String domain = request.getServerName();
+		String naverAuthUrl = naverLoginService.getAuthorizationUrl(session, domain);
+		model.addAttribute("naverAuthUrl", naverAuthUrl);
 		
 		return "join/MemberType";
 	}
