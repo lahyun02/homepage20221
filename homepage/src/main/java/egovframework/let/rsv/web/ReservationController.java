@@ -69,6 +69,22 @@ public class ReservationController {
 		return "rsv/RsvSelectList";
 	}
 	
+	//예약정보 상세 
+	@RequestMapping(value = "/rsv/rsvSelect.do")
+	public String select(@ModelAttribute("searchVO") ReservationVO searchVO, HttpServletRequest request, ModelMap model) throws Exception {
+		
+		request.getSession().removeAttribute("sessionReservationApply");
+		
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		model.addAttribute("USER_INFO", user);
+		
+		// pk값인 resveId를 가져오기 위함. 상세조회에 필수 파라미터가 있어야 함.
+		ReservationVO result = reservationService.selectReservation(searchVO);
+		model.addAttribute("result", result);
+		
+		return "rsv/RsvSelect"; 
+	}
+	
 	
 	
 }

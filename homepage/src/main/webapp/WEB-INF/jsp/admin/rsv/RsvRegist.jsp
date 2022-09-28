@@ -116,9 +116,7 @@
 						<tr>
 							<th scope="row">내용</th>
 							<td>
-								<textarea id="resveCn" name="resveCn" rows="15" title="내용입력">
-									<c:out value="${result.resveCn}" />
-								</textarea>
+								<textarea id="resveCn" name="resveCn" rows="15" title="내용입력"><c:out value="${result.resveCn}" /></textarea>
 							</td>
 						</tr>
 					</tbody>

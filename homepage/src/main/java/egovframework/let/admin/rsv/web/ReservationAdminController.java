@@ -73,7 +73,7 @@ public class ReservationAdminController {
 	@RequestMapping(value = "/admin/rsv/rsvRegist.do")
 	public String rsvRegist(@ModelAttribute("searchVO") ReservationVO ReservationVO, HttpServletRequest request, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-		if(user == null) {
+		if(user == null || EgovStringUtil.isEmpty(user.getId())) {
 			model.addAttribute("message", "로그인 후 사용가능합니다.");
 			return "forward:/admin/rsv/rsvSelectList.do";
 		}else {
