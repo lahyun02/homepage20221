@@ -1,11 +1,13 @@
 package egovframework.let.rsv.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import egovframework.com.cmm.service.FileVO;
 import egovframework.let.rsv.service.ReservationApplyService;
 import egovframework.let.rsv.service.ReservationApplyVO;
 import egovframework.let.rsv.service.ReservationService;
@@ -29,6 +31,9 @@ public class ReservationApplyServiceImpl extends EgovAbstractServiceImpl impleme
 	
 	@Resource(name = "reservationService")
 	private ReservationService reservationService;
+	
+	@Resource(name = "egovReqTempIdGnrService")
+	private EgovIdGnrService idgenTempService;
 
 	//예약가능여부 확인
 	public ReservationApplyVO rsvCheck(ReservationApplyVO vo) throws Exception {
@@ -106,6 +111,13 @@ public class ReservationApplyServiceImpl extends EgovAbstractServiceImpl impleme
 	@Override
 	public void updateReservationConfirm(ReservationApplyVO vo) throws Exception {
 		reservationApplyMapper.updateReservationConfirm(vo);
+	}
+	
+	//예약자 엑셀 업로드 -- 10/19 예정 
+	@Override
+	public Map<String, Object> excelUpload(FileVO file, ReservationApplyVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

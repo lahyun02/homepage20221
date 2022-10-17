@@ -34,10 +34,13 @@ package egovframework.let.utl.fcc.service;
  */
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -892,4 +895,40 @@ public class EgovStringUtil {
 		else
 			return "";
 	}
+	
+	//브라우저별 인코딩된 파일명 변환 --영어로 파일명을 브라우저에 떨구면 상관없지만, 한글은 영어가 아니기 때문에 utf-8로 변환시켜서 떨궈야 브라우저로 받았을때 문자열 깨짐x  
+	public static String getConvertFileName(HttpServletRequest request, String fileName) throws Exception {
+		
+		String header = request.getHeader("User-Agent");
+		String encodedFilename = "";
+		
+		if(header.indexOf("MSIE") > -1) {
+			encodedFilename = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+		} else if (header.indexOf("Trident") > -1) { // IE 11 문자열 깨짐 방지
+			encodedFilename = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+		} else if (header.indexOf("Firefox") > -1) {
+			encodedFilename = "\"" + new String(fileName.getBytes("UTF-8"), "8859_1") + "\""; 
+		} else if (header.indexOf("Opera") > -1) {
+			encodedFilename = "\"" + new String(fileName.getBytes("UTF-8"), "8859_1") + "\"";
+		} else if (header.indexOf("Chrome") > -1) {
+			//크롬 브라우저에서 정한 규칙대로. 
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < fileName.length(); i++) {
+				char c = fileName.charAt(i);
+				if(c > '~') {  //~ 아스키코드 번호 : 126 
+					sb.append(URLEncoder.encode("" + c, "UTF-8"));
+				} else {
+					sb.append(c);
+				}
+			}
+			encodedFilename = sb.toString();
+		}else {
+			encodedFilename = "download";  //download.xml 
+		}
+		
+		return encodedFilename;
+	}
+	
+	
+	
 }
