@@ -114,10 +114,11 @@
 				</div>
 				
 				<div class="excelUploadBox">
+				<!-- 첨부파일은 enctype 이 있어야하고, post방식으로 보내야 함. -->
 					<form id="excelForm" name="excelForm" action="/admin/rsv/excelUpload.json" enctype="multipart/form-data" method="post">
 						<input type="hidden" name="resveId" id="resveId" value="${param.resveId}" /> 
-						<input type="hidden" name="resveId" id="resveDe" value="TYPE01" /> 
-						
+						<input type="hidden" name="resveDe" id="resveDe" value="TYPE01" /> 
+						 
 						<a href="/excel/rqtExcel_sample.xls" class="btn" download>엑셀 업로드 샘플 다운로드</a>
 						<br/>
 						<label for="registerExcelFile">파일첨부</label>
@@ -157,17 +158,18 @@ $(document).on('click', '#excelReg', function(e){
 		url: url,
 		type: 'POST',
 		data: form,
-		async: false,
-		cache: false,
-		contentType: false,
-		processData: false,
+		async: false,	//동기 (Synchronous, 요청을 보낸 후 응답결과를 받아야지만 다음 동작이 이루어지는 방식)
+		cache: false,	// 브라우져 캐쉬를 방지- 브라우저 캐쉬를 막아서 캐쉬된 값이 아닌 현재 값을 호출
+		contentType: false,	// default 값은 "application/x-www-form-urlencoded; charset=UTF-8"
+		processData: false,	// 일반적으로 서버에 전달되는 데이터는 query string 형
 		dataType: 'json'
 		, success: function(result) {
 			var message = "";
 			
 			if(result.success) {
 				$("#excel").hide();
-				window.location.reload();
+				window.location.reload();	//(JS) reload: 페이지를 다시 실행. 새로고침 버튼처럼 현재 리소스를 다시 불러옴
+				//바로 리스트가 나올수 있도록 리로드시킴
 			} else {
 				for(i = 0; i < result.data.length; i++) {
 					if(i != 0){

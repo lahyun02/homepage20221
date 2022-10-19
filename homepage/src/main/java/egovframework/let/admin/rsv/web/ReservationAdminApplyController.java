@@ -194,6 +194,7 @@ public class ReservationAdminApplyController {
 	}
 	
 	//엑셀 업로드
+	//@ResponseBody - 자바1.8부터 가능. 리턴값을 자동으로 json으로 바꿔준다. (json으로 보낼때 사용)  
 	@RequestMapping(value="/admin/rsv/excelUpload.json", method=RequestMethod.POST)
 	public @ResponseBody JsonResponse excelUpload(@ModelAttribute ReservationApplyVO searchVO, ModelMap model, MultipartHttpServletRequest multiRequest, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -204,10 +205,13 @@ public class ReservationAdminApplyController {
 			List<FileVO> result = null;
 			final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			if(!files.isEmpty()) {
+				// 첨부파일 저장하는 방식 
 				result = fileUtil.parseFileInf(files, "TEMP_", 0, null, "rsvFileStorePath");
-				Map<String, Object> resultMap = new HashMap<>();
+				Map<String, Object> resultMap = new HashMap<>();  //json으로 데이터 뿌릴 때 사용
 				
+				// 배열 등에서 이런 형식의 for문 많이 사용
 				for(FileVO file : result) {
+					//윈도우에서와 달리 리눅스 서버에서는 xlsx파일을 읽을 수 없음. -> xls를 기본적으로 많이 사용. 파일 형식을 xlsx로 변환시켜 업로드하면 안읽힘.
 					if("xls".equals(file.getFileExtsn())||"xlsx".equals(file.getFileExtsn())) {
 						searchVO.setCreatIp(request.getRemoteAddr());
 						resultMap = reservationApplyService.excelUpload(file, searchVO);
